@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80" width="240" height="80">
+  <defs>
+    <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF1801"/>
+      <stop offset="100%" style="stop-color:#E10600"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- F1 Logo - Iconic Design -->
+  <g fill="white">
+    <!-- F shape -->
+    <path d="M5 5 L5 55 L15 55 L15 35 L45 35 L50 25 L15 25 L15 15 L55 15 L60 5 Z"/>
+    
+    <!-- 1 shape with negative space speed lines -->
+    <path d="M70 5 L70 55 L80 55 L80 15 L95 5 Z"/>
+    
+    <!-- Speed lines creating the iconic "1" negative space -->
+    <path d="M85 20 L130 20 L135 15 L90 15 Z"/>
+    <path d="M90 30 L125 30 L130 25 L95 25 Z"/>
+    <path d="M95 40 L120 40 L125 35 L100 35 Z"/>
+    <path d="M100 50 L115 50 L120 45 L105 45 Z"/>
+  </g>
+  
+  <!-- Formula 1 Text -->
+  <text x="5" y="75" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold" letter-spacing="3">
+    FORMULA 1
+  </text>
+</svg>

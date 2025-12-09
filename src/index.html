@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Championship Analytics | 1950-2024</title>
+    
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/topojson.v3.min.js"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Loader -->
+    <div id="loader">
+        <div class="loader-content">
+            <div class="racing-loader">
+                <div class="car"></div>
+                <div class="track"></div>
+            </div>
+            <h2>LOADING F1 DATA</h2>
+            <p class="loader-status">Initializing...</p>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo">
+                    <img src="assets/f1-logo.png" alt="F1" class="f1-logo" onerror="this.style.display='none'; document.querySelector('.logo-fallback').style.display='flex';">
+                    <div class="logo-fallback" style="display:none;">
+                        <span class="logo-f">F</span><span class="logo-1">1</span>
+                    </div>
+                </div>
+                <div class="title-block">
+                    <h1>CHAMPIONSHIP ANALYTICS</h1>
+                    <p class="tagline">75 Years of Racing Excellence • 1950-2024</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="season-selector">
+                    <label>SEASON</label>
+                    <select id="season-select">
+                        <option value="2024">2024</option>
+                    </select>
+                </div>
+                <div class="quick-stats">
+                    <div class="quick-stat">
+                        <span class="stat-num" id="qs-races">0</span>
+                        <span class="stat-label">RACES</span>
+                    </div>
+                    <div class="quick-stat">
+                        <span class="stat-num" id="qs-drivers">0</span>
+                        <span class="stat-label">DRIVERS</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="tab active" data-tab="overview">
+                <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                <span>OVERVIEW</span>
+            </button>
+            <button class="tab" data-tab="drivers">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <span>DRIVERS</span>
+            </button>
+            <button class="tab" data-tab="teams">
+                <svg viewBox="0 0 24 24"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/></svg>
+                <span>TEAMS</span>
+            </button>
+            <button class="tab" data-tab="circuits">
+                <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                <span>CIRCUITS</span>
+            </button>
+            <button class="tab" data-tab="analysis">
+                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                <span>ANALYSIS</span>
+            </button>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            
+            <!-- OVERVIEW TAB -->
+            <section class="tab-panel active" id="panel-overview">
+                <!-- Hero Stats -->
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="stat-ring">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" class="ring-bg"/>
+                                <circle cx="50" cy="50" r="45" class="ring-fill" id="ring-races"/>
+                            </svg>
+                            <div class="stat-inner">
+                                <span class="big-num" id="stat-races">0</span>
+                                <span class="stat-name">RACES</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="stat-ring">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" class="ring-bg"/>
+                                <circle cx="50" cy="50" r="45" class="ring-fill" id="ring-drivers"/>
+                            </svg>
+                            <div class="stat-inner">
+                                <span class="big-num" id="stat-drivers">0</span>
+                                <span class="stat-name">DRIVERS</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="stat-ring">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" class="ring-bg"/>
+                                <circle cx="50" cy="50" r="45" class="ring-fill" id="ring-teams"/>
+                            </svg>
+                            <div class="stat-inner">
+                                <span class="big-num" id="stat-teams">0</span>
+                                <span class="stat-name">TEAMS</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="stat-ring">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" class="ring-bg"/>
+                                <circle cx="50" cy="50" r="45" class="ring-fill" id="ring-circuits"/>
+                            </svg>
+                            <div class="stat-inner">
+                                <span class="big-num" id="stat-circuits">0</span>
+                                <span class="stat-name">CIRCUITS</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Championship Battle -->
+                <div class="viz-card full-width">
+                    <div class="card-header">
+                        <h2>CHAMPIONSHIP BATTLE</h2>
+                        <div class="card-controls">
+                            <button class="control-btn active" data-chart="drivers">DRIVERS</button>
+                            <button class="control-btn" data-chart="constructors">CONSTRUCTORS</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="championship-chart" class="chart-container"></div>
+                    </div>
+                </div>
+
+                <!-- Grid Layout -->
+                <div class="viz-grid">
+                    <!-- Race Winners -->
+                    <div class="viz-card">
+                        <div class="card-header">
+                            <h2>RACE WINNERS</h2>
+                        </div>
+                        <div class="card-body">
+                            <div id="winners-chart" class="chart-container"></div>
+                        </div>
+                    </div>
+
+                    <!-- Points Distribution -->
+                    <div class="viz-card">
+                        <div class="card-header">
+                            <h2>POINTS DISTRIBUTION</h2>
+                        </div>
+                        <div class="card-body">
+                            <div id="points-chart" class="chart-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DRIVERS TAB -->
+            <section class="tab-panel" id="panel-drivers">
+                <div class="filter-bar">
+                    <div class="search-box">
+                        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                        <input type="text" id="driver-search" placeholder="Search drivers...">
+                    </div>
+                    <select id="driver-era">
+                        <option value="all">All Eras</option>
+                        <option value="2020-2024">Hybrid Era (2020-2024)</option>
+                        <option value="2010-2019">Turbo Hybrid (2010-2019)</option>
+                        <option value="2000-2009">V10/V8 Era (2000-2009)</option>
+                        <option value="1990-1999">90s Era</option>
+                        <option value="1980-1989">Turbo Era</option>
+                        <option value="1950-1979">Classic Era</option>
+                    </select>
+                </div>
+
+                <!-- Driver Stats -->
+                <div class="viz-card full-width">
+                    <div class="card-header">
+                        <h2>DRIVER CAREER COMPARISON</h2>
+                        <p class="card-subtitle">Select drivers to compare their careers</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="driver-selector">
+                            <select id="driver1-select"><option value="">Select Driver 1</option></select>
+                            <span class="vs">VS</span>
+                            <select id="driver2-select"><option value="">Select Driver 2</option></select>
+                            <button id="compare-btn" class="btn-primary">COMPARE</button>
+                        </div>
+                        <div id="driver-comparison" class="chart-container"></div>
+                    </div>
+                </div>
+
+                <!-- Driver Leaderboard -->
+                <div class="viz-card full-width">
+                    <div class="card-header">
+                        <h2>ALL-TIME LEADERBOARD</h2>
+                        <div class="card-controls">
+                            <button class="control-btn active" data-metric="wins">WINS</button>
+                            <button class="control-btn" data-metric="podiums">PODIUMS</button>
+                            <button class="control-btn" data-metric="poles">POLES</button>
+                            <button class="control-btn" data-metric="points">POINTS</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="leaderboard-chart" class="chart-container"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TEAMS TAB -->
+            <section class="tab-panel" id="panel-teams">
+                <!-- Constructor Dominance -->
+                <div class="viz-card full-width">
+                    <div class="card-header">
+                        <h2>CONSTRUCTOR DOMINANCE THROUGH HISTORY</h2>
+                        <p class="card-subtitle">Market share of championship points by era</p>
+                    </div>
+                    <div class="card-body">
+                        <div id="dominance-chart" class="chart-container large"></div>
+                    </div>
+                </div>
+
+                <!-- Team Cards -->
+                <div class="viz-card full-width">
+                    <div class="card-header">
+                        <h2>CONSTRUCTOR STANDINGS</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="team-standings" class="team-grid"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CIRCUITS TAB -->
+            <section class="tab-panel" id="panel-circuits">
+                <!-- World Map -->
+                <div class="viz-card full-width">
+                    <div class="card-header">
+                        <h2>GLOBAL CIRCUIT MAP</h2>
+                        <p class="card-subtitle">Click on circuits for detailed statistics</p>
+                    </div>
+                    <div class="card-body">
+                        <div id="world-map" class="chart-container large"></div>
+                    </div>
+                </div>
+
+                <!-- Circuit Details -->
+                <div class="viz-grid">
+                    <div class="viz-card">
+                        <div class="card-header">
+                            <h2>MOST RACES HOSTED</h2>
+                        </div>
+                        <div class="card-body">
+                            <div id="circuits-races-chart" class="chart-container"></div>
+                        </div>
+                    </div>
+                    <div class="viz-card">
+                        <div class="card-header">
+                            <h2>CIRCUIT WINNERS</h2>
+                        </div>
+                        <div class="card-body">
+                            <div id="circuit-winners" class="chart-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ANALYSIS TAB -->
+            <section class="tab-panel" id="panel-analysis">
+                <!-- Race Results Matrix -->
+                <div class="viz-card full-width">
+                    <div class="card-header">
+                        <h2>SEASON RESULTS MATRIX</h2>
+                        <div class="card-controls">
+                            <select id="matrix-season">
+                                <option value="2024">2024</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="results-matrix" class="chart-container large"></div>
+                    </div>
+                </div>
+
+                <!-- Pit Stop Analysis -->
+                <div class="viz-card full-width">
+                    <div class="card-header">
+                        <h2>PIT STOP PERFORMANCE</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="pitstop-chart" class="chart-container"></div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>F1 Championship Analytics Dashboard | Data: 1950-2024</p>
+            <p class="credits">Created by: Parth Wadnerkar, Sarang More, Yash Patel | Indiana University</p>
+        </footer>
+    </div>
+
+    <!-- Tooltip -->
+    <div id="tooltip" class="tooltip"></div>
+
+    <!-- Scripts -->
+    <script src="js/data-loader.js"></script>
+    <script src="js/visualizations.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
