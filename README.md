@@ -1,7 +1,8 @@
 # 🏎️ F1 Championship Analytics Dashboard
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/tiny-cassata-a8fd41/deploy-status)](https://app.netlify.com/sites/tiny-cassata-a8fd41/deploys)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Deployed on Netlify](https://img.shields.io/badge/Deployed%20on-Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)](https://tiny-cassata-a8fd41.netlify.app)
+[![License: MIT](https://img.shields.io/badge/License-MIT-E10600?style=for-the-badge)](https://opensource.org/licenses/MIT)
+[![D3.js](https://img.shields.io/badge/D3.js-v7-F9A03C?style=for-the-badge&logo=d3.js&logoColor=white)](https://d3js.org/)
 
 An interactive data visualization dashboard for exploring Formula 1 racing history from 1950 to present. Built with vanilla JavaScript and D3.js, this project provides comprehensive insights into drivers, constructors, circuits, and race performance across seven decades of F1 racing.
 
@@ -210,5 +211,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <p align="center">
-  Made with ❤️ and lots of ☕ for the love of Formula 1
+  <i>"If you no longer go for a gap that exists, you are no longer a racing driver."</i><br>
+  — Ayrton Senna
+</p>
+
+<p align="center">
+  🏁 <b>Lights out and away we go!</b> 🏁
 </p>
