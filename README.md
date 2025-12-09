@@ -1,11 +1,11 @@
 # 🏎️ F1 Championship Analytics Dashboard
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/YOUR_BADGE_ID/deploy-status)](https://app.netlify.com/sites/YOUR_SITE_NAME/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/tiny-cassata-a8fd41/deploy-status)](https://app.netlify.com/sites/tiny-cassata-a8fd41/deploys)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 An interactive data visualization dashboard for exploring Formula 1 racing history from 1950 to present. Built with vanilla JavaScript and D3.js, this project provides comprehensive insights into drivers, constructors, circuits, and race performance across seven decades of F1 racing.
 
-🔗 **[Live Demo](https://YOUR_SITE_NAME.netlify.app)** ← *Update after Netlify deployment*
+### 🔗 [Live Demo](https://tiny-cassata-a8fd41.netlify.app)
 
 ![F1 Dashboard Preview](src/assets/f1-logo.png)
 
